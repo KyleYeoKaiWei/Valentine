@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>For You, Baby 💖</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #fde2e4;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+    position: relative;
+  }
+
+  .gift {
+    font-size: 90px;
+    cursor: pointer;
+  }
+
+  h1 {
+    color: #222;
+  }
+
+  .question {
+    display: none;
+  }
+
+  .buttons {
+    margin-top: 25px;
+    position: relative;
+    height: 120px;
+  }
+
+  button {
+    padding: 14px 28px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+    position: absolute;
+  }
+
+  #yesBtn {
+    background: #ff4d6d;
+    color: white;
+    left: 40%;
+  }
+
+  #noBtn {
+    background: #555;
+    color: white;
+    left: 55%;
+  }
+
+  .celebrate {
+    display: none;
+    font-size: 34px;
+    color: #ff4d6d;
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 22px;
+    animation: float 3s linear forwards;
+  }
+
+  @keyframes float {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-200px); opacity: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="gift" id="gift">🎁</div>
+
+  <div class="question" id="questionBox">
+    <h1>Baby, will you be my Valentine? 💘</h1>
+
+    <div class="buttons">
+      <button id="yesBtn">YES 💖</button>
+      <button id="noBtn">NO 😐</button>
+    </div>
+  </div>
+
+<div class="celebrate" id="celebrate">
+  YES LAA 😭💖 I love you, BABYYY.  
+  I’ll see you on 14th Feb 😘
+</div>
+
+
+</div>
+
+<!-- AUDIO -->
+<audio id="bgSoft" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-tenderness.mp3">
+</audio>
+
+<audio id="bgDrama" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-creepy.mp3">
+</audio>
+
+<audio id="bgHappy">
+  <source src="https://www.bensound.com/bensound-music/bensound-happyrock.mp3">
+</audio>
+
+<script>
+  const gift = document.getElementById("gift");
+  const questionBox = document.getElementById("questionBox");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const celebrate = document.getElementById("celebrate");
+
+  const bgSoft = document.getElementById("bgSoft");
+  const bgDrama = document.getElementById("bgDrama");
+  const bgHappy = document.getElementById("bgHappy");
+
+  let noCount = 0;
+
+const noTexts = [
+  "NO 😐",
+  "HOW DARE YOUUU 😭",
+  "You don’t love me at all… 💔",
+  "Pweety pweaseeeee 🥺",
+  "FINAL WARNING 😡"
+];
+
+
+  gift.onclick = () => {
+    gift.style.display = "none";
+    questionBox.style.display = "block";
+    bgSoft.play();
+  };
+
+  yesBtn.onclick = () => {
+    bgSoft.pause();
+    bgDrama.pause();
+    bgHappy.play();
+
+    questionBox.style.display = "none";
+    celebrate.style.display = "block";
+    popHearts();
+  };
+
+  noBtn.onclick = () => {
+    noCount++;
+
+    if (noCount < noTexts.length) {
+      noBtn.textContent = noTexts[noCount];
+    }
+
+    // YES grows
+    yesBtn.style.transform = `scale(${1 + noCount * 0.25})`;
+
+    // NO shrinks
+    noBtn.style.transform = `scale(${Math.max(0.4, 1 - noCount * 0.15)})`;
+
+    // Switch to dramatic music on first NO
+    if (noCount === 1) {
+      bgSoft.pause();
+      bgDrama.play();
+    }
+
+    // NO button runs away from 2nd press onwards
+    if (noCount >= 2) {
+      const x = Math.random() * 70;
+      const y = Math.random() * 70;
+      noBtn.style.left = x + "%";
+      noBtn.style.top = y + "px";
+    }
+  };
+
+  function popHearts() {
+    for (let i = 0; i < 35; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💖";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    }
+  }
+</script>
+
+</body>
+</html>
